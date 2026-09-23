@@ -3,12 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<meta name="app-version" content="0.1.0">
+<meta name="app-version" content="0.2.0">
 <meta name="theme-color" content="#0B0B0F">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light dark">
 <meta name="format-detection" content="telephone=no">
 <title>Хаха. Знакомства по приколу</title>
 <link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/themes/night.css">
+<link rel="stylesheet" href="css/themes/meme.css">
+<link rel="stylesheet" href="css/themes/journal.css">
+<link rel="stylesheet" href="css/themes/sticker.css">
+<script src="js/theme.js"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -30,7 +35,7 @@
       <section class="screen" data-screen="filters"></section>
     </div>
     <div id="overlay"></div>
-    <nav id="tabbar" hidden>
+    <nav id="tabbar" class="tabbar" hidden>
       <button class="tab" data-tab="feed" type="button"><span class="ico">🃏</span><span>Анкеты</span></button>
       <button class="tab" data-tab="likes" type="button"><span class="ico">🔥</span><span>Лайки</span><span class="dot" hidden></span></button>
       <button class="tab" data-tab="chats" type="button"><span class="ico">💬</span><span>Чаты</span><span class="dot" hidden></span></button>
@@ -38,6 +43,7 @@
     </nav>
     <div id="toast" role="status" aria-live="polite"></div>
   </div>
+  <aside id="theme-dock" aria-label="Оформление"></aside>
 </div>
 <script src="js/data.js"></script>
 <script src="js/humor.js"></script>

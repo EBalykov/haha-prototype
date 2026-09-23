@@ -5,6 +5,8 @@
   const H = globalThis.Haha;
   const D = H.data, E = H.humor, TG = H.tg;
   const KEY = 'haha.v1';
+  const Q = new URLSearchParams(location.search);
+  const EMBED = Q.get('embed') === '1'; // витрина дизайн-системы: состояние только в памяти
   const VERSION = (document.querySelector('meta[name="app-version"]') || {}).content || '0.0.0';
   const $ = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
@@ -32,6 +34,7 @@
   let S = load();
   let memOnly = false;
   function load() {
+    if (EMBED) return fresh();
     try {
       const raw = localStorage.getItem(KEY);
       if (!raw) return fresh();
@@ -50,7 +53,7 @@
   function save() { S.updatedAt = Date.now(); clearTimeout(saveTimer); saveTimer = setTimeout(flush, 150); }
   function flush() {
     clearTimeout(saveTimer);
-    if (resetting) return;
+    if (resetting || EMBED) return;
     try { localStorage.setItem(KEY, JSON.stringify(S)); }
     catch (e) { if (!memOnly) { memOnly = true; toast('Память браузера недоступна, прогресс не сохранится'); } }
   }
@@ -110,7 +113,7 @@
   const hbadge = (pct, extra) => `<span class="hbadge ${extra || ''}"><span>🤣</span><span class="n">${pct}%</span><span>по юмору</span></span>`;
   function confettiHTML() {
     const rng = E.mulberry32(42);
-    const colors = ['#FF6A3D', '#FFC53D', '#3DDC97', '#7C5CFF', '#4FC3F7', '#fff'];
+    const colors = ['var(--primary)', 'var(--primary-2)', 'var(--like)', 'var(--highlight)', 'var(--verified)', 'var(--r-you-1)'];
     let s = '';
     for (let i = 0; i < 16; i++) s += `<i class="confetti" style="left:${Math.round(rng() * 100)}%;background:${colors[i % colors.length]};animation-delay:${(rng() * 0.8).toFixed(2)}s;animation-duration:${(2 + rng() * 1.4).toFixed(2)}s"></i>`;
     return s;
@@ -218,7 +221,7 @@
       const invite = S.me.invitedBy ? `<span class="chip on">🎟 По приглашению @${esc(S.me.invitedBy)}</span>` : '';
       el.innerHTML = `
         <div class="hero">
-          <div class="emoji" id="splash-logo">😂</div>
+          <div class="teaser" id="splash-logo" aria-hidden="true"><i style="background-image:url('${PHOTO('p15-1.jpg')}')"></i><i style="background-image:url('${PHOTO('p06-1.jpg')}')"></i><i style="background-image:url('${PHOTO('p11-1.jpg')}')"></i>${hbadge(98)}</div>
           <div class="logo grad-text">${esc(D.APP.name)}</div>
           <div class="tagline">${esc(D.APP.tagline)}</div>
           <p class="muted">Свайпай, как привык. Мэтчись по чувству юмора.</p>
@@ -431,7 +434,7 @@
       <div class="stamp like">Да</div><div class="stamp nope">Нет</div><div class="stamp super">Ржу 🤣</div>
       <div class="info">
         ${hbadge(c.pct)}
-        <div class="name">${esc(p.name)}, ${p.age} ${p.verified ? '<span class="v" title="Фото проверено">✔︎</span>' : ''}<button class="iconbtn" data-noswipe data-act="info" data-id="${p.id}" aria-label="Подробнее" style="margin-left:auto;pointer-events:auto;background:rgba(0,0,0,.35);width:36px;height:36px;font-size:16px">ⓘ</button></div>
+        <div class="name">${esc(p.name)}, ${p.age} ${p.verified ? '<span class="v" title="Фото проверено">✔︎</span>' : ''}<button class="iconbtn infobtn" data-noswipe data-act="info" data-id="${p.id}" aria-label="Подробнее">ⓘ</button></div>
         <div class="meta">📍 ${p.distKm} км · ${esc(p.city)} · общих ржак: <b>${c.shared.length}</b> из ${D.CARDS.length}</div>
         <div class="joke">«${esc(p.joke)}»</div>
         <div class="tagrow">${p.tags.map((t) => `<span>${esc(t)}</span>`).join('')}</div>
@@ -532,7 +535,7 @@
         el.innerHTML = `
           <div class="scroll" style="padding-top:0">
             <div class="hero-photo" style="background-image:url('${PHOTO(p.photos[idx])}')"><div class="shade"></div>
-              <div class="topbar"><button class="iconbtn" data-act="back" aria-label="Назад" style="background:rgba(0,0,0,.4)">←</button><div class="ttl"></div><button class="iconbtn" data-act="more" aria-label="Ещё" style="background:rgba(0,0,0,.4)">⋯</button></div>
+              <div class="topbar"><button class="iconbtn onphoto" data-act="back" aria-label="Назад">←</button><div class="ttl"></div><button class="iconbtn onphoto" data-act="more" aria-label="Ещё">⋯</button></div>
               <div class="thumbs">${p.photos.map((f, i) => `<button type="button" data-act="thumb" data-i="${i}" class="${i === idx ? 'on' : ''}" style="background-image:url('${PHOTO(f)}')"></button>`).join('')}</div>
             </div>
             <div class="section" style="padding-top:0">
@@ -542,7 +545,7 @@
             </div>
             <div class="section"><h3>Юмор-совместимость</h3>
               <div class="panel"><div class="radarwrap">${E.radarSVG([mine, theirs], { size: 240 })}</div>
-              <div class="legend"><span><i style="background:linear-gradient(135deg,#FF6A3D,#FFC53D)"></i>ты</span><span><i style="background:linear-gradient(135deg,#7C5CFF,#4DD0E1)"></i>${esc(p.name)}</span></div>
+              <div class="legend"><span><i style="background:linear-gradient(135deg,var(--r-me-1),var(--r-me-2))"></i>ты</span><span><i style="background:linear-gradient(135deg,var(--r-you-1),var(--r-you-2))"></i>${esc(p.name)}</span></div>
               <p class="small muted" style="padding-top:8px">Вкус ${Math.round((c.cos + 1) / 2 * 100)}% · стиль ${Math.round(c.style * 100)}% · общие ржаки ${c.shared.length} из ${D.CARDS.length}. Стиль: ${esc(styleSummary(otherHumor(p).answers).toLowerCase())}.</p></div>
             </div>
             <div class="section"><h3>Вы оба ржёте над <span class="badge grad">${c.shared.length}</span></h3>
@@ -592,7 +595,7 @@
           <button class="btn primary block" data-act="chat">Написать</button>
           ${ice ? `<button class="btn soft block" data-act="meme">Отправить этот мем 😂</button>` : ''}
           <button class="btn ghost block" data-act="weekender">📅 Позвать на выходные</button>
-          <button class="btn sm" data-act="later" style="background:transparent;color:var(--muted)">Позже</button>
+          <button class="btn sm link" data-act="later">Позже</button>
         </div></div>`;
       delegate(ov, {
         chat() { R.go('chat', { id: p.id }); },
@@ -731,7 +734,7 @@
         <div class="scroll">
           ${fresh.length ? `<div class="section" style="padding-bottom:0"><h3>Новые мэтчи <span class="badge grad">${fresh.length}</span></h3></div><div class="mrow">${fresh.map((m) => { const p = profileById(m.id); return `<button type="button" data-act="open" data-id="${p.id}"><div class="ava lg ring" style="width:64px;height:64px;background-image:url('${PHOTO(p.photos[0])}')"></div><span>${esc(p.name)}</span></button>`; }).join('')}</div>` : ''}
           <div class="section" style="padding-bottom:4px"><h3>Сообщения</h3></div>
-          <div class="list chatlist">${ms.map((m) => { const p = profileById(m.id), chat = S.chats[m.id] || { msgs: [] }, last = chat.msgs[chat.msgs.length - 1], un = unreadCount(m.id), c = compat(m.id ? p : p); return `<button type="button" class="item" data-act="open" data-id="${p.id}"><div class="ava" style="background-image:url('${PHOTO(p.photos[0])}')"></div><div class="grow"><div class="name"><span>${esc(p.name)} <span class="tiny" style="color:var(--amber)">🤣 ${c.pct}%</span></span><span>${last ? fmtTime(last.ts) : ''}</span></div><div class="last ${un ? 'unread' : ''}">${last ? (last.from === 'me' ? 'Ты: ' : '') + esc(msgPreview(last)) : 'Это мэтч! Напиши первым'}</div></div>${un ? `<span class="dot">${un}</span>` : ''}</button>`; }).join('') || '<p class="muted small" style="text-align:center;padding:24px">Мэтчей пока нет. Иди свайпать 😉</p>'}</div>
+          <div class="list chatlist">${ms.map((m) => { const p = profileById(m.id), chat = S.chats[m.id] || { msgs: [] }, last = chat.msgs[chat.msgs.length - 1], un = unreadCount(m.id), c = compat(m.id ? p : p); return `<button type="button" class="item" data-act="open" data-id="${p.id}"><div class="ava" style="background-image:url('${PHOTO(p.photos[0])}')"></div><div class="grow"><div class="name"><span>${esc(p.name)} <span class="tiny" style="color:var(--accent-text)">🤣 ${c.pct}%</span></span><span>${last ? fmtTime(last.ts) : ''}</span></div><div class="last ${un ? 'unread' : ''}">${last ? (last.from === 'me' ? 'Ты: ' : '') + esc(msgPreview(last)) : 'Это мэтч! Напиши первым'}</div></div>${un ? `<span class="dot">${un}</span>` : ''}</button>`; }).join('') || '<p class="muted small" style="text-align:center;padding:24px">Мэтчей пока нет. Иди свайпать 😉</p>'}</div>
         </div>`;
       delegate(el, { open(t) { R.go('chat', { id: t.dataset.id }); } });
     }
@@ -748,7 +751,7 @@
       const stickers = c.shared.slice(0, 6);
       const hasDate = S.chats[p.id].msgs.some((m) => m.kind === 'date');
       el.innerHTML = `
-        <div class="topbar"><button class="iconbtn" data-act="back" aria-label="Назад">←</button><button type="button" class="row grow" data-act="person" style="background:transparent;border:0;color:inherit;text-align:left;padding:0"><div class="ava" style="width:40px;height:40px;background-image:url('${PHOTO(p.photos[0])}')"></div><div><div style="font-weight:800">${esc(p.name)}</div><div class="tiny" style="color:var(--amber)">🤣 ${c.pct}% по юмору · ${c.shared.length} общих ржак</div></div></button><button class="iconbtn" data-act="more">⋯</button></div>
+        <div class="topbar"><button class="iconbtn" data-act="back" aria-label="Назад">←</button><button type="button" class="row grow" data-act="person" style="background:transparent;border:0;color:inherit;text-align:left;padding:0"><div class="ava" style="width:40px;height:40px;background-image:url('${PHOTO(p.photos[0])}')"></div><div><div style="font-weight:800">${esc(p.name)}</div><div class="tiny" style="color:var(--accent-text)">🤣 ${c.pct}% по юмору · ${c.shared.length} общих ржак</div></div></button><button class="iconbtn" data-act="more">⋯</button></div>
         <div class="chat"><div class="msgs" id="msgs"></div>
           ${hasDate ? '' : `<div class="datecard"><button type="button" class="plan" data-act="weekender"><span class="em">📅</span><div class="grow"><b>Предложить свидание</b><span>Weekender подберёт план на субботу</span></div><span class="badge grad">›</span></button></div>`}
           ${stickers.length ? `<div class="stickers">${stickers.map((id) => `<button type="button" data-act="sticker" data-id="${id}">😂 ${esc(cardById(id).topic)}</button>`).join('')}</div>` : ''}
@@ -792,7 +795,7 @@
         el.innerHTML = `
           <div class="topbar"><button class="iconbtn" data-act="back">←</button><div class="ttl">Шутка дня</div><div class="spacer"></div></div>
           <div class="scroll stack" style="gap:14px;padding-bottom:24px">
-            <div class="jotd-meme bg${D.JOTD.meme.bg}"><div class="cap" style="font-size:20px;font-weight:900;text-transform:uppercase;text-shadow:0 2px 0 #000">${esc(D.JOTD.meme.top)}</div><div class="scene" style="font-size:80px">${D.JOTD.meme.scene}</div><div class="tiny" style="color:rgba(255,255,255,.7)">Подпиши мем. Лучшие подписи видят все</div></div>
+            <div class="jotd-meme bg${D.JOTD.meme.bg}"><div class="jcap">${esc(D.JOTD.meme.top)}</div><div class="scene" style="font-size:80px">${D.JOTD.meme.scene}</div><div class="jhint">Подпиши мем. Лучшие подписи видят все</div></div>
             <div class="rank"><span style="font-size:26px">🏆</span><div class="grow"><b>Твой рейтинг юмора: ${esc(D.JOTD.myRank)}</b><div class="small muted">Голоса за твои подписи поднимают тебя в ленте</div></div></div>
             ${S.jotd.myCaption ? '' : `<div class="pad row"><input class="input grow" id="cap-input" maxlength="60" placeholder="Твоя подпись"><button class="btn primary" data-act="cap">Отправить</button></div>`}
             <div class="caps">${caps.map((c) => `<div class="capitem ${c.mine ? 'mine' : ''}"><div class="grow"><div>${esc(c.text)}</div><div class="who">${esc(c.author)}${c.mine ? ' (ты)' : ''}</div></div><button type="button" class="vote ${S.jotd.votes[c.id] ? 'on' : ''}" data-act="vote" data-id="${c.id}" ${c.mine ? 'disabled' : ''}>😂 ${c.votes}</button></div>`).join('')}</div>
@@ -819,6 +822,8 @@
         <div class="scroll">
           <div class="mehead"><div class="ava xl" style="background-image:url('${myPhoto()}')"></div><h2>${esc(S.me.name || 'Без имени')}${S.me.age ? ', ' + S.me.age : ''}</h2><div class="muted small">📍 ${esc(S.me.city)} ${S.premium ? '· <span class="badge grad">Премиум</span>' : ''}</div>${done ? hbadge('', '') .replace('%', '').replace('<span class="n"></span>', `<span class="n">${esc(E.title(vec.vhat))}</span>`).replace('по юмору', '') : ''}</div>
           <div class="section"><h3>Мой юмор-профиль</h3><div class="panel">${done ? `<div class="radarwrap">${E.radarSVG([vec], { size: 220 })}</div>${axisBarsHTML(vec)}<p class="small muted" style="padding-top:8px">Стиль: ${esc(styleSummary(S.humor.answers).toLowerCase())}. Коронная шутка: «${esc(S.me.joke)}»</p>` : '<p class="muted">Тест ещё не пройден</p>'}<button class="btn ghost block sm" data-act="retake" style="margin-top:10px">Пройти тест заново</button></div></div>
+          <div class="section"><h3>Оформление</h3><p class="small muted">Четыре дизайн-системы, меняются сразу.</p>
+            <div class="themes">${H.theme.THEMES.map((t) => `<button type="button" class="theme-tile ${t.id === H.theme.current() ? 'on' : ''}" data-theme="${t.id}" data-act="theme" data-id="${t.id}"><span class="sw">${t.swatch.map((c) => `<i style="background:${c}"></i>`).join('')}</span><b>${esc(t.name)}</b><small>${esc(t.tagline)}</small>${t.id === H.theme.current() ? '<span class="check">✓</span>' : ''}</button>`).join('')}</div></div>
           <div class="section settings"><div class="list">
             <button type="button" class="item" data-act="filters"><span class="em">🎯</span><span class="grow">Фильтры поиска</span><span class="small muted">${S.filters.ageMin}-${S.filters.ageMax} · ${S.filters.distKm} км</span><span class="chev">›</span></button>
             <button type="button" class="item" data-act="premium"><span class="em">⭐</span><span class="grow">Хаха Премиум</span><span class="badge grad">${S.premium ? 'активен' : '299 ⭐'}</span><span class="chev">›</span></button>
@@ -834,6 +839,7 @@
         filters() { R.go('filters'); },
         premium() { R.go('premium'); },
         invite() { const url = 'https://t.me/share/url?url=' + encodeURIComponent('https://t.me/haha_dating_bot/app?startapp=' + encodeURIComponent(S.me.name || 'friend')) + '&text=' + encodeURIComponent('Заходи в Хаха: знакомства по приколу'); if (TG.available) TG.openLink(url); else toast('Ссылка-приглашение скопирована (имитация)'); },
+        theme(t) { H.theme.set(t.dataset.id); TG.haptic('selection'); const st = $('.scroll', el).scrollTop; screens.me.render(el); $('.scroll', el).scrollTop = st; toast('Оформление: ' + H.theme.byId[t.dataset.id].name); },
         safety() { toast('Фото проверено селфи-верификацией. Жалобы разбирает модерация 24/7.'); },
         reset() { if (confirm('Сбросить всё демо и начать с чистого экрана?')) H.demo.reset(); }
       });
@@ -902,13 +908,71 @@
     state() { return S; }
   };
 
+  // ---------- Витрина: демо-состояние и открытие любого экрана по адресу ----------
+  function demoState() {
+    const cp = D.CANON_PERSONA;
+    const s = fresh();
+    Object.assign(s.me, cp.me, { step: 0 });
+    s.humor = { reactions: Object.assign({}, cp.reactions), answers: cp.answers.slice(), doneAt: Date.now() };
+    s.gate = 'app';
+    return s;
+  }
+  function seedDemoStory() {
+    // Для скриншотов и витрины: мэтч с Ксенией и живой чат, сверху колоды «зеркальная» анкета с 98%
+    if (S.matches.some((m) => m.id === 'p03')) return;
+    const base = Date.now() - 40 * 60e3;
+    ['p01', 'p02', 'p04', 'p05'].forEach((id, i) => S.decisions.push({ id, kind: 'nope', ts: base - (5 - i) * 60e3, matched: false }));
+    S.decisions.push({ id: 'p03', kind: 'like', ts: base - 30e3, matched: true });
+    const ice = compat(profileById('p03')).shared[0] || null;
+    S.matches.push({ id: 'p03', ts: base - 30e3, via: 'like', icebreaker: ice });
+    S.chats.p03 = { msgs: [
+      { from: 'me', kind: 'meme', ref: ice, text: '😂', ts: base },
+      { from: 'them', kind: 'text', text: D.REPLIES.p03[0], ts: base + 40e3 },
+      { from: 'me', kind: 'text', text: 'Кот из подъезда кивает и мне, так что мы почти родственники', ts: base + 120e3 },
+      { from: 'them', kind: 'text', text: D.REPLIES.p03[1], ts: base + 160e3 },
+      { from: 'me', kind: 'date', ref: 'w2', text: 'Квиз для тех, кто ржёт', ts: base + 400e3 },
+      { from: 'them', kind: 'text', text: D.POOL.date[0], ts: base + 430e3 }
+    ], replyIdx: 2, readAt: Date.now() };
+  }
+  function openScreen(spec) {
+    const parts = String(spec).split(':');
+    const name = parts[0], pid = parts[1] || 'p03';
+    if (['feed', 'likes', 'chats', 'me', 'splash', 'onboarding', 'quiz', 'style', 'result'].indexOf(name) >= 0) { R.reset(name); return true; }
+    const home = { person: 'feed', chat: 'chats', match: 'feed', weekender: 'chats', premium: 'me', jotd: 'feed', filters: 'feed' }[name];
+    if (!home) return false;
+    R.reset(home);
+    R.go(name, ['person', 'chat', 'match', 'weekender'].indexOf(name) >= 0 ? { id: pid } : {});
+    return true;
+  }
+  function renderDock() {
+    const dock = document.getElementById('theme-dock');
+    if (!dock || EMBED) return;
+    const cur = H.theme.current();
+    dock.innerHTML = '<div class="dock-title">Оформление</div>' + H.theme.THEMES.map((t) => `<button type="button" data-id="${t.id}" class="${t.id === cur ? 'on' : ''}"><span class="sw">${t.swatch.map((c) => `<i style="background:${c}"></i>`).join('')}</span><span>${esc(t.name)}<small>${esc(t.tagline)}</small></span></button>`).join('') + '<a href="design.html" target="_blank" rel="noopener">Дизайн-система →</a>';
+    dock.onclick = (e) => {
+      const b = e.target.closest('button[data-id]');
+      if (!b) return;
+      H.theme.set(b.dataset.id);
+      const top = current();
+      if (top && top.name === 'me') screens.me.render($('.screen[data-screen="me"]'));
+    };
+  }
+  document.addEventListener('haha:theme', renderDock);
+
   // ---------- Старт ----------
   function boot() {
-    const q = new URLSearchParams(location.search);
+    const q = Q;
     const wantReset = q.get('reset') === '1' || location.hash === '#reset' || TG.startParam === 'reset';
     if (wantReset) { try { localStorage.removeItem(KEY); } catch (e) { /* игнорируем */ } S = fresh(); if (location.search || location.hash) { const u = new URL(location.href); u.search = ''; u.hash = ''; history.replaceState(null, '', u.toString()); } }
     if (TG.startParam && TG.startParam !== 'reset' && !S.me.invitedBy) { S.me.invitedBy = TG.startParam.slice(0, 24); save(); }
     if (TG.user && !S.me.tg) { S.me.tg = TG.user; save(); }
+    if (q.get('demo') === '1') {
+      S = demoState(); ensureSeeded(); seedDemoStory();
+      if (q.get('screen') === 'quiz') { const keep = {}; D.CARDS.slice(0, 6).forEach((c) => { keep[c.id] = S.humor.reactions[c.id]; }); S.humor.reactions = keep; S.gate = 'quiz'; }
+      if (!EMBED) flush();
+    }
+    renderDock();
+    if (q.get('screen') && openScreen(q.get('screen'))) return;
     const g = S.gate;
     if (g === 'app') { ensureSeeded(); R.reset('feed'); }
     else if (g === 'result') R.reset('result');

@@ -1,0 +1,85 @@
+/* Тема «Ночь»: тёмный премиум, неон заката. Тема по умолчанию (в :root). */
+:root, [data-theme="night"] {
+  color-scheme: dark;
+  --bg: #09090C;
+  --bg-art: radial-gradient(140% 55% at 50% -12%, rgba(255, 94, 58, 0.14), transparent 62%);
+  --bg-art-size: auto;
+  --surface: #131318;
+  --surface-2: #1C1C24;
+  --surface-3: #282833;
+  --text: #F6F3EF;
+  --muted: rgba(246, 243, 239, 0.62);
+  --faint: rgba(246, 243, 239, 0.38);
+  --edge: rgba(255, 255, 255, 0.07);
+  --edge-2: rgba(255, 255, 255, 0.15);
+  --overlay: rgba(0, 0, 0, 0.62);
+  --primary: #FF5E3A;
+  --primary-2: #FFC24A;
+  --on-primary: #1A0E05;
+  --grad: linear-gradient(135deg, #FF5E3A 0%, #FF8A3D 48%, #FFC24A 100%);
+  --grad-soft: linear-gradient(135deg, rgba(255, 94, 58, 0.2), rgba(255, 194, 74, 0.14));
+  --tint: rgba(255, 138, 61, 0.42);
+  --glow: rgba(255, 94, 58, 0.42);
+  --accent-text: #FF7A4D;
+  --highlight: #FFC24A;
+  --like: #3DDC97;
+  --nope: #FF4D63;
+  --super: #FFC24A;
+  --ok: #3DDC97;
+  --danger: #FF4D63;
+  --verified: #5EC8FF;
+  --r-me-1: #FF5E3A;
+  --r-me-2: #FFC24A;
+  --r-you-1: #8B6CFF;
+  --r-you-2: #4DD0E1;
+  --radius: 26px;
+  --radius-s: 16px;
+  --radius-btn: 18px;
+  --radius-chip: 999px;
+  --bw: 0px;
+  --bc: transparent;
+  --shadow-card: 0 30px 60px -14px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-btn: none;
+  --shadow-pop: 0 18px 44px rgba(0, 0, 0, 0.6);
+  --press: scale(0.97);
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-label: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+  --w-display: 900;
+  --w-title: 800;
+  --track-display: -0.035em;
+  --case-display: none;
+  --style-display: normal;
+  --case-label: uppercase;
+  --track-label: 0.1em;
+  --badge-bg: linear-gradient(135deg, #FF5E3A 0%, #FF8A3D 48%, #FFC24A 100%);
+  --badge-fg: #1A0E05;
+  --badge-rot: 0deg;
+  --tab-bg: rgba(10, 10, 13, 0.72);
+  --tab-border: 1px solid rgba(255, 255, 255, 0.06);
+  --tab-fg: rgba(246, 243, 239, 0.4);
+  --tab-on: #F6F3EF;
+  --photo-shade: linear-gradient(to top, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.42) 42%, transparent 66%);
+  --on-photo: #FFFFFF;
+  --joke-bg: rgba(0, 0, 0, 0.4);
+  --tag-bg: rgba(255, 255, 255, 0.14);
+  --q1: linear-gradient(160deg, #2B1B3F 0%, #4A2C8C 100%);
+  --q2: linear-gradient(160deg, #0F3D3E 0%, #1F7A7A 100%);
+  --q3: linear-gradient(160deg, #3A1C1C 0%, #8C2F39 100%);
+  --q4: linear-gradient(160deg, #1E2B4A 0%, #2F5DA8 100%);
+  --q5: linear-gradient(160deg, #1A1A1D 0%, #3C3C46 100%);
+  --q6: linear-gradient(160deg, #4A2E10 0%, #A0621C 100%);
+  --q-fg: #FFFFFF;
+  --frame-bg: radial-gradient(1200px 800px at 50% 30%, #231621 0%, #07070A 70%);
+  --frame-edge: #1B1B22;
+}
+
+/* Структура «Ночи»: свечение акцента, стеклянный таббар, градиентный логотип с ореолом */
+[data-theme="night"] .btn.primary { box-shadow: 0 12px 30px -10px var(--glow); }
+[data-theme="night"] .hbadge { box-shadow: 0 10px 26px -8px var(--glow); }
+[data-theme="night"] .act.like { box-shadow: 0 14px 32px -8px var(--glow); }
+[data-theme="night"] .card .name { font-size: 30px; }
+[data-theme="night"] .logo { filter: drop-shadow(0 10px 34px rgba(255, 94, 58, 0.4)); }
+[data-theme="night"] .splash .teaser i { border-color: rgba(255, 255, 255, 0.14); }
+[data-theme="night"] .splash .teaser .hbadge { box-shadow: 0 14px 36px -6px var(--glow); }
+[data-theme="night"] .composer { background: rgba(9, 9, 12, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }

@@ -151,10 +151,10 @@
     };
     const ring = (f) => AXES.map((k) => pt(k, R * f).map((n) => n.toFixed(1)).join(',')).join(' ');
     let s = `<svg class="radar" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="Юмор-профиль">`;
-    s += `<defs><linearGradient id="${uid}a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6A3D"/><stop offset="1" stop-color="#FFC53D"/></linearGradient>`;
-    s += `<linearGradient id="${uid}b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7C5CFF"/><stop offset="1" stop-color="#4DD0E1"/></linearGradient></defs>`;
-    for (const f of [0.25, 0.5, 0.75, 1]) s += `<polygon points="${ring(f)}" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>`;
-    for (const k of AXES) { const [x, y] = pt(k, R); s += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="rgba(255,255,255,.12)"/>`; }
+    s += `<defs><linearGradient id="${uid}a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--r-me-1)"/><stop offset="1" style="stop-color:var(--r-me-2)"/></linearGradient>`;
+    s += `<linearGradient id="${uid}b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--r-you-1)"/><stop offset="1" style="stop-color:var(--r-you-2)"/></linearGradient></defs>`;
+    for (const f of [0.25, 0.5, 0.75, 1]) s += `<polygon points="${ring(f)}" fill="none" style="stroke:var(--edge-2)" stroke-width="1"/>`;
+    for (const k of AXES) { const [x, y] = pt(k, R); s += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" style="stroke:var(--edge)"/>`; }
     (vectors || []).forEach((vec, i) => {
       const disp = vec.disp || vec;
       const pts = AXES.map((k) => pt(k, R * (0.15 + 0.85 * clamp(disp[k] || 0, 0, 1))).map((n) => n.toFixed(1)).join(',')).join(' ');
@@ -164,7 +164,7 @@
     if (opts.labels !== false) {
       for (const k of AXES) {
         const [x, y] = pt(k, R + 22);
-        s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-size="11" fill="rgba(245,242,238,.72)">${AXIS_LABEL[k]}</text>`;
+        s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-size="11" style="fill:var(--muted);font-family:var(--font-label)">${AXIS_LABEL[k]}</text>`;
       }
     }
     s += '</svg>';

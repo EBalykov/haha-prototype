@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ru" data-theme-auto="off">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="app-version" content="0.2.0">
+<title>Хаха: дизайн-система</title>
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/themes/night.css">
+<link rel="stylesheet" href="css/themes/meme.css">
+<link rel="stylesheet" href="css/themes/journal.css">
+<link rel="stylesheet" href="css/themes/sticker.css">
+<script src="js/theme.js"></script>
+<style>
+  /* Страница-витрина: сама страница нейтральная, темы живут на вложенных блоках [data-theme] */
+  html, body { height: auto !important; overflow: auto !important; background: #EEEBE6; color: #171514; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, system-ui, sans-serif; }
+  .sg { max-width: 1320px; margin: 0 auto; padding: 36px 24px 90px; }
+  .sg-head .kicker { font: 700 12px/1.2 -apple-system, system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #8A827A; }
+  .sg-head .title { font: 900 52px/1 -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; letter-spacing: -0.04em; margin: 10px 0 0; }
+  .sg-lead { font-size: 18px; color: #4A4642; max-width: 780px; margin-top: 14px; line-height: 1.5; }
+  .sg-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .sg-nav a { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: #fff; color: inherit; text-decoration: none; font-weight: 700; box-shadow: 0 1px 0 rgba(0,0,0,.06); }
+  .sg-nav a i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; margin-left: -6px; box-shadow: 0 0 0 2px #fff; }
+  .sg-nav a i:first-child { margin-left: 0; }
+  .sg-block { margin-top: 56px; }
+  .sg-h { font: 800 28px/1.1 -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; letter-spacing: -0.02em; margin: 0 0 16px; }
+  .sg-principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .sg-principles div { background: #fff; border-radius: 18px; padding: 18px; line-height: 1.45; }
+  .sg-principles b { display: block; font-size: 16px; margin-bottom: 6px; }
+  .sg-principles span { color: #5C5650; font-size: 14px; }
+  .sg-table-wrap { overflow-x: auto; background: #fff; border-radius: 18px; }
+  .sg-table { border-collapse: collapse; width: 100%; min-width: 860px; font-size: 14px; line-height: 1.4; }
+  .sg-table th, .sg-table td { padding: 12px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid #EEE9E2; }
+  .sg-table th { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A827A; font-weight: 700; }
+  .sg-table td:first-child { color: #8A827A; font-weight: 600; white-space: nowrap; }
+  .sg-table thead th { color: #171514; font-size: 15px; letter-spacing: 0; text-transform: none; }
+
+  /* Блок одной темы */
+  .sg-theme { margin-top: 56px; border-radius: 32px; padding: 32px; background-color: var(--bg); background-image: var(--bg-art); background-size: var(--bg-art-size, auto); color: var(--text); font-family: var(--font-body); overflow: hidden; }
+  .sg-theme-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .sg-theme-head .logo { font-size: 64px; }
+  .sg-theme-head .meta { color: var(--muted); max-width: 520px; line-height: 1.45; }
+  .sg-theme-head .open { display: flex; gap: 10px; flex-wrap: wrap; }
+  .sg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 24px; margin-top: 28px; align-items: start; }
+  .sg-card { background: var(--surface); border: max(1px, var(--bw)) solid var(--edge); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-btn); }
+  .sg-card > .eyebrow { display: block; font-size: 11px; font-weight: 800; color: var(--accent-text); margin-bottom: 12px; }
+  .sg-swatches { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .sg-sw { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .sg-sw i { width: 38px; height: 38px; flex: none; border-radius: 12px; box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.25); }
+  .sg-sw > div { min-width: 0; }
+  .sg-sw b { display: block; font-size: 12px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 600; }
+  .sg-sw code { display: block; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .sg-spec h1 { font-size: 42px; line-height: 1.02; }
+  .sg-spec h2 { font-size: 26px; margin-top: 10px; }
+  .sg-spec p { margin-top: 10px; color: var(--muted); }
+  .sg-spec .fonts { margin-top: 14px; font-size: 12px; color: var(--faint); line-height: 1.5; }
+  .sg-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+  .sg-deck { position: relative; width: 100%; max-width: 300px; height: 440px; margin: 0 auto; }
+  .sg-deck.q { height: 360px; }
+  .sg-chat { display: flex; flex-direction: column; gap: 8px; }
+  .sg-tabwrap { position: relative; height: 96px; border-radius: 20px; overflow: hidden; background-color: var(--bg); background-image: var(--bg-art); box-shadow: inset 0 0 0 1px var(--edge); }
+
+  /* Матрица экранов */
+  .sg-matrix-wrap { overflow-x: auto; padding-bottom: 8px; }
+  .sg-matrix { display: grid; grid-template-columns: 110px repeat(4, 196px); gap: 16px 18px; align-items: start; min-width: 950px; }
+  .sg-matrix .colh { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .sg-matrix .rowh { font-size: 13px; color: #6B645D; font-weight: 700; padding-top: 8px; }
+  .sg-shot { position: relative; width: 196px; height: 424px; border-radius: 22px; overflow: hidden; background: #D9D4CD; box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.45); }
+  .sg-shot iframe { position: absolute; left: 0; top: 0; width: 390px; height: 844px; border: 0; transform: scale(0.5026); transform-origin: 0 0; }
+  .sg-shot .wait { position: absolute; inset: 0; display: grid; place-items: center; color: #8A827A; font-size: 12px; }
+  .sg-foot { margin-top: 60px; color: #8A827A; font-size: 13px; line-height: 1.6; }
+  @media (max-width: 640px) { .sg-head .title { font-size: 38px; } .sg-theme { padding: 20px; border-radius: 24px; } }
+</style>
+</head>
+<body>
+<main class="sg">
+  <header class="sg-head">
+    <div class="kicker">Хаха · знакомства по приколу</div>
+    <div class="title">Дизайн-система в четырёх вариантах</div>
+    <p class="sg-lead">Одно приложение, четыре характера. Все варианты стоят на одном контракте из токенов: компоненты не знают ни одного цвета, только имена токенов. Тема меняет не только палитру, но и шрифт, форму, тени и даже геометрию карточки анкеты. Всё ниже нарисовано живыми стилями приложения, а экраны внизу это само приложение.</p>
+    <nav class="sg-nav" id="sg-nav"></nav>
+  </header>
+
+  <section class="sg-block">
+    <h2 class="sg-h">Принципы</h2>
+    <div class="sg-principles">
+      <div><b>Процент по юмору главный герой</b><span>Наклейка «98% по юмору» на каждой анкете, крупные цифры, общие ржаки рядом. Это то, чего нет у конкурентов.</span></div>
+      <div><b>Один жест</b><span>Свайп влево, вправо и вверх. Кнопки дублируют жест, ничего нового учить не нужно.</span></div>
+      <div><b>Мем как язык</b><span>Шутки в тесте, мем-стикеры в чате, айсбрейкер «вы оба ржали над…» после мэтча.</span></div>
+      <div><b>Системные шрифты</b><span>SF Pro, SF Pro Rounded, New York и SF Mono: работают офлайн, мгновенно, с кириллицей.</span></div>
+      <div><b>Тема это геометрия, а не только цвет</b><span>Плашка под фото, паспарту, выезжающий лист: карточка перестраивается под характер темы.</span></div>
+    </div>
+  </section>
+
+  <section class="sg-block">
+    <h2 class="sg-h">Сравнение</h2>
+    <div class="sg-table-wrap"><table class="sg-table" id="sg-compare"></table></div>
+  </section>
+
+  <div id="sg-themes"></div>
+
+  <section class="sg-block" id="screens">
+    <h2 class="sg-h">Экраны в каждой теме</h2>
+    <p class="sg-lead" style="margin-top:-6px">Это живое приложение в демо-режиме. Экраны грузятся по очереди, чтобы не перегружать телефон. Нажимать можно.</p>
+    <div class="sg-matrix-wrap"><div class="sg-matrix" id="sg-matrix"></div></div>
+  </section>
+
+  <footer class="sg-foot" id="sg-foot"></footer>
+</main>
+<script>
+(function () {
+  'use strict';
+  const THEMES = Haha.theme.THEMES;
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const PHOTO = (f) => 'assets/photos/' + f;
+  const VERSION = (document.querySelector('meta[name="app-version"]') || {}).content || '';
+  const META = {
+    night: { mood: 'Вечер, неон, ощущение «дорого»', shape: 'Скругления 26 и 16, свечение вместо рамок', type: 'SF Pro Display, 900', strong: 'Выглядит как зрелый продукт, фото кинематографичные', risk: 'Ближе всех к привычным тёмным приложениям знакомств, меньше отличается' },
+    meme: { mood: 'Мем-культура, дерзко и громко', shape: 'Обводка 3 px, жёсткая тень без размытия, углы 10-14', type: 'SF Pro Display 900 заглавными и SF Mono', strong: 'Сильнее всех отличается от конкурентов, сразу считывается «по приколу», просится в сторис', risk: 'Аудитории 28+ может показаться несерьёзным' },
+    journal: { mood: 'Умная ирония, стендап, книги', shape: 'Волосяные линии, углы 2-6, бумага с зерном', type: 'New York с засечками, курсив', strong: 'Самый стильный и взрослый, юмор как интеллект, анкета как журнальный разворот', risk: 'Спокойнее, меньше «вау» у 18-22; на Android засечки беднее' },
+    sticker: { mood: 'Дружелюбно, мягко, безопасно', shape: 'Скругления 20-32, пилюли, мягкие цветные тени', type: 'SF Pro Rounded, 900', strong: 'Самый дружелюбный и широкий, родной для Telegram-стикеров', risk: 'Может выглядеть детским, слабее передаёт остроту юмора' }
+  };
+  const SWATCHES = [
+    ['--bg', 'фон'], ['--surface', 'поверхность'], ['--text', 'текст'], ['--muted', 'вторичный'],
+    ['--primary', 'бренд'], ['--primary-2', 'бренд 2'], ['--highlight', 'акцент'], ['--accent-text', 'акцент текста'],
+    ['--like', 'да'], ['--nope', 'нет'], ['--super', 'ржу'], ['--verified', 'проверено'],
+    ['--grad', 'градиент'], ['--grad-soft', 'подложка']
+  ];
+  const SCREENS = [['splash', 'Сплэш'], ['feed', 'Лента'], ['match:p03', 'Мэтч'], ['result', 'Юмор-профиль'], ['chat:p03', 'Чат'], ['quiz', 'Тест']];
+  const fontName = (stack) => {
+    const f = (stack || '').split(',')[0].trim().replace(/"/g, '');
+    return ({ 'ui-serif': 'New York', 'ui-rounded': 'SF Pro Rounded', '-apple-system': 'SF Pro', 'ui-monospace': 'SF Mono' })[f] || f;
+  };
+  const dots = (t) => t.swatch.map((c) => `<i style="background:${c}"></i>`).join('');
+
+  document.getElementById('sg-nav').innerHTML = THEMES.map((t) => `<a href="#t-${t.id}">${dots(t)}<span>${esc(t.name)}</span></a>`).join('') + '<a href="#screens">Экраны</a>';
+
+  const rows = [['Настроение', 'mood'], ['Для кого', null], ['Форма', 'shape'], ['Шрифт', 'type'], ['Сильная сторона', 'strong'], ['Риск', 'risk']];
+  document.getElementById('sg-compare').innerHTML =
+    `<thead><tr><th></th>${THEMES.map((t) => `<th>${esc(t.name)}</th>`).join('')}</tr></thead><tbody>` +
+    rows.map(([label, key]) => `<tr><td>${label}</td>${THEMES.map((t) => `<td>${esc(key ? META[t.id][key] : t.audience)}</td>`).join('')}</tr>`).join('') + '</tbody>';
+
+  document.getElementById('sg-themes').innerHTML = THEMES.map((t) => `
+    <section class="sg-theme" id="t-${t.id}" data-theme="${t.id}">
+      <div class="sg-theme-head">
+        <div><div class="logo grad-text">${esc(t.name)}</div><p class="meta">${esc(t.tagline)}. ${esc(t.audience)}.</p></div>
+        <div class="open">
+          <a class="btn primary sm" href="index.html?theme=${t.id}" target="_blank" rel="noopener">Открыть приложение</a>
+          <a class="btn ghost sm" href="index.html?theme=${t.id}&amp;demo=1&amp;screen=feed" target="_blank" rel="noopener">Демо с анкетами</a>
+        </div>
+      </div>
+      <div class="sg-grid">
+        <div class="sg-card"><span class="eyebrow">Палитра</span><div class="sg-swatches" data-swatches></div></div>
+        <div class="sg-card sg-spec"><span class="eyebrow">Совпадение 98% по юмору</span>
+          <h1>Ха-ха, это мэтч!</h1><h2>Самоироник-наблюдатель</h2>
+          <p>Свайпай, как привык. Мэтчись по чувству юмора. Тест из двадцати шуток вместо анкеты про знак зодиака.</p>
+          <div class="fonts" data-fonts></div>
+        </div>
+        <div class="sg-card"><span class="eyebrow">Кнопки и метки</span>
+          <div class="sg-row"><button class="btn primary" type="button">Написать</button><button class="btn soft" type="button">Отправить мем</button></div>
+          <div class="sg-row"><button class="btn ghost" type="button">Позвать на выходные</button><button class="btn link sm" type="button">Позже</button></div>
+          <div class="sg-row"><span class="chip on">про будильники</span><span class="chip">про кофе</span><span class="badge grad">299 ⭐</span></div>
+          <div class="sg-row"><span class="hbadge"><span>🤣</span><span class="n">98%</span><span>по юмору</span></span></div>
+          <div class="progress" style="margin:6px 0 16px"><i style="width:62%"></i></div>
+          <div class="actions" style="padding:4px 0"><button class="act undo" type="button">↩</button><button class="act big nope" type="button">✕</button><button class="act super" type="button">🤣</button><button class="act big like" type="button">❤️</button></div>
+        </div>
+        <div><div class="sg-deck">
+          <div class="card" data-depth="0" style="--s-like:1">
+            <div class="photo" style="background-image:url('${PHOTO('p06-1.jpg')}')"></div><div class="shade"></div>
+            <div class="dots"><i class="on"></i><i></i><i></i></div>
+            <div class="stamp like">Да</div>
+            <div class="info">
+              <span class="hbadge"><span>🤣</span><span class="n">98%</span><span>по юмору</span></span>
+              <div class="name">Полина, 31 <span class="v">✔︎</span><button class="iconbtn infobtn" type="button">ⓘ</button></div>
+              <div class="meta">📍 4 км · Москва · общих ржак: <b>17</b> из 20</div>
+              <div class="joke">«Ненавижу, когда люди опаздывают. Особенно я.»</div>
+              <div class="tagrow"><span>бег</span><span>суши</span><span>театр</span></div>
+            </div>
+          </div>
+        </div></div>
+        <div><div class="sg-deck q">
+          <div class="card qcard bg3" data-depth="0" style="--s-super:1">
+            <div class="topic">про пекарню</div>
+            <div class="cap">Устроился в пекарню</div><div class="scene">🥖🔥</div><div class="cap">Выгорел за неделю</div>
+            <div class="stamp super">Ржу</div>
+          </div>
+        </div></div>
+        <div class="sg-card"><span class="eyebrow">Чат и навигация</span>
+          <div class="sg-chat">
+            <div class="bubble">Ты тоже ржёшь над котом из подъезда?<span class="t">11:06</span></div>
+            <div class="bubble me">Он кивает и мне, мы почти родственники<span class="t">11:07</span></div>
+            <div class="bubble date me"><b>📅 Приглашение на субботу</b>🧠 Квиз для тех, кто ржёт<span class="t">11:10</span></div>
+          </div>
+          <div class="sg-tabwrap" style="margin-top:16px"><nav class="tabbar">
+            <button class="tab on" type="button"><span class="ico">🃏</span><span>Анкеты</span></button>
+            <button class="tab" type="button"><span class="ico">🔥</span><span>Лайки</span><span class="dot">3</span></button>
+            <button class="tab" type="button"><span class="ico">💬</span><span>Чаты</span></button>
+            <button class="tab" type="button"><span class="ico">🙂</span><span>Профиль</span></button>
+          </nav></div>
+        </div>
+      </div>
+    </section>`).join('');
+
+  // Палитра и шрифты читаются из живых токенов блока темы: страница не может разойтись с CSS
+  document.querySelectorAll('.sg-theme').forEach((sec) => {
+    const cs = getComputedStyle(sec);
+    const val = (k) => cs.getPropertyValue(k).trim();
+    sec.querySelector('[data-swatches]').innerHTML = SWATCHES.map(([k, label]) => {
+      const v = val(k);
+      const shown = v.startsWith('linear-gradient') ? 'градиент' : v;
+      return `<div class="sg-sw"><i style="background:var(${k})"></i><div><b>${esc(label)}</b><code>${esc(k)} ${esc(shown)}</code></div></div>`;
+    }).join('');
+    sec.querySelector('[data-fonts]').innerHTML =
+      `Заголовки: <b>${esc(fontName(val('--font-display')))}</b>, ${esc(val('--w-display'))}${val('--style-display') === 'italic' ? ', курсив' : ''}${val('--case-display') === 'uppercase' ? ', заглавные' : ''}<br>` +
+      `Текст: <b>${esc(fontName(val('--font-body')))}</b> · подписи: <b>${esc(fontName(val('--font-label')))}</b><br>` +
+      `Радиусы: ${esc(val('--radius'))} / ${esc(val('--radius-s'))} · обводка: ${esc(val('--bw'))}`;
+  });
+
+  // Матрица экранов: живое приложение в демо-режиме, фреймы грузятся по одному
+  const grid = document.getElementById('sg-matrix');
+  let html = '<div></div>' + THEMES.map((t) => `<div class="colh">${esc(t.name)}</div>`).join('');
+  SCREENS.forEach(([scr, label]) => {
+    html += `<div class="rowh">${esc(label)}</div>` + THEMES.map((t) =>
+      `<div class="sg-shot"><div class="wait">загружаю…</div><iframe title="${esc(t.name)}: ${esc(label)}" data-src="index.html?embed=1&amp;demo=1&amp;theme=${t.id}&amp;screen=${encodeURIComponent(scr)}"></iframe></div>`).join('');
+  });
+  grid.innerHTML = html;
+  const frames = [...grid.querySelectorAll('iframe')];
+  let started = false, i = 0;
+  const next = () => {
+    if (i >= frames.length) { document.documentElement.setAttribute('data-matrix', 'done'); return; }
+    const f = frames[i++];
+    f.addEventListener('load', () => { const w = f.parentNode.querySelector('.wait'); if (w) w.remove(); setTimeout(next, 120); }, { once: true });
+    f.src = f.dataset.src;
+  };
+  const start = () => { if (!started) { started = true; next(); } };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); start(); } }, { rootMargin: '600px' });
+    io.observe(document.getElementById('screens'));
+  } else start();
+
+  document.getElementById('sg-foot').innerHTML = `Хаха ${esc(VERSION ? 'v' + VERSION : '')} · дизайн-система: ${THEMES.length} темы, стили в <code>css/themes/</code>, контракт токенов проверяется при каждой сборке.`;
+})();
+</script>
+</body>
+</html>

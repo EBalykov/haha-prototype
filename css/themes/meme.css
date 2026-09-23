@@ -1,0 +1,155 @@
+/* Тема «Мем»: необрутализм. Толстая чёрная обводка, жёсткая тень без размытия, плоские кислотные цвета,
+   заглавные буквы, моноширинные подписи. Информация об анкете в белой плашке, бейдж наклеен наискось. */
+[data-theme="meme"] {
+  color-scheme: light;
+  --bg: #FFF8E1;
+  --bg-art: radial-gradient(rgba(17, 17, 17, 0.1) 1.1px, transparent 1.4px);
+  --bg-art-size: 18px 18px;
+  --surface: #FFFFFF;
+  --surface-2: #FFF1C7;
+  --surface-3: #FFE38A;
+  --text: #111111;
+  --muted: rgba(17, 17, 17, 0.68);
+  --faint: rgba(17, 17, 17, 0.44);
+  --edge: #111111;
+  --edge-2: #111111;
+  --overlay: rgba(17, 17, 17, 0.55);
+  --primary: #FF4FA3;
+  --primary-2: #3355FF;
+  --on-primary: #111111;
+  --grad: linear-gradient(#FF4FA3, #FF4FA3);
+  --grad-soft: linear-gradient(#FFE38A, #FFE38A);
+  --tint: #111111;
+  --glow: rgba(255, 79, 163, 0.35);
+  --accent-text: #3355FF;
+  --highlight: #FFD23F;
+  --like: #7CFF3F;
+  --nope: #FF5A36;
+  --super: #FFD23F;
+  --ok: #1FAF4B;
+  --danger: #FF3B30;
+  --verified: #3355FF;
+  --r-me-1: #FF4FA3;
+  --r-me-2: #FF4FA3;
+  --r-you-1: #3355FF;
+  --r-you-2: #3355FF;
+  --radius: 14px;
+  --radius-s: 10px;
+  --radius-btn: 12px;
+  --radius-chip: 10px;
+  --bw: 3px;
+  --bc: #111111;
+  --shadow-card: 7px 7px 0 #111111;
+  --shadow-btn: 4px 4px 0 #111111;
+  --shadow-pop: 6px 6px 0 #111111;
+  --press: translate(3px, 3px);
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Arial Black", "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-label: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --w-display: 900;
+  --w-title: 900;
+  --track-display: -0.02em;
+  --case-display: uppercase;
+  --style-display: normal;
+  --case-label: uppercase;
+  --track-label: 0.04em;
+  --badge-bg: #FFD23F;
+  --badge-fg: #111111;
+  --badge-rot: -4deg;
+  --tab-bg: #FFFFFF;
+  --tab-border: 3px solid #111111;
+  --tab-fg: rgba(17, 17, 17, 0.5);
+  --tab-on: #111111;
+  --photo-shade: linear-gradient(to top, rgba(0, 0, 0, 0.25), transparent 30%);
+  --on-photo: #111111;
+  --joke-bg: #FFF1C7;
+  --tag-bg: #FFFFFF;
+  --q1: #FF4FA3;
+  --q2: #3355FF;
+  --q3: #FFD23F;
+  --q4: #7CFF3F;
+  --q5: #111111;
+  --q6: #FF8A3D;
+  --q-fg: #FFFFFF;
+  --q3-fg: #111111;
+  --q4-fg: #111111;
+  --q6-fg: #111111;
+  --frame-bg: radial-gradient(rgba(17, 17, 17, 0.16) 1.3px, transparent 1.6px) 0 0 / 20px 20px, #FFD23F;
+  --frame-edge: #111111;
+}
+
+/* Кнопки: заглавные, «нажатие» сдвигает кнопку в тень */
+[data-theme="meme"] .btn, [data-theme="meme"] .qbtn { text-transform: uppercase; letter-spacing: 0.02em; font-weight: 900; }
+[data-theme="meme"] .btn:active, [data-theme="meme"] .qbtn:active, [data-theme="meme"] .act:active { box-shadow: 1px 1px 0 #111; transform: translate(3px, 3px); }
+[data-theme="meme"] .btn.ghost { border: 3px solid #111; background: #FFFFFF; box-shadow: 4px 4px 0 #111; }
+[data-theme="meme"] .btn.soft { background: #FFD23F; }
+[data-theme="meme"] .btn.tg { background: #2AABEE; color: #fff; }
+[data-theme="meme"] .grad-text { background: none; -webkit-background-clip: border-box; background-clip: border-box; color: #111; -webkit-text-fill-color: #111; text-shadow: 3px 3px 0 #FF4FA3; }
+[data-theme="meme"] .logo { font-size: 64px; text-shadow: 5px 5px 0 #FF4FA3; }
+[data-theme="meme"] .splash .teaser i { border: 3px solid #111; box-shadow: 5px 5px 0 #111; }
+[data-theme="meme"] .topbar .ttl { text-transform: uppercase; }
+
+/* Анкета: фото сверху, белая плашка снизу, процент наклеен на стык */
+[data-theme="meme"] .card .shade { background: none; }
+[data-theme="meme"] .card .info { left: 0; right: 0; bottom: 0; padding: 16px 14px 14px; gap: 7px; background: #FFFFFF; border-top: 3px solid #111; }
+[data-theme="meme"] .card .hbadge { position: absolute; top: -34px; right: 12px; }
+[data-theme="meme"] .card .name { font-size: 26px; }
+[data-theme="meme"] .card .meta { opacity: 1; color: rgba(17, 17, 17, 0.72); font-family: var(--font-label); font-size: 11px; text-transform: uppercase; }
+[data-theme="meme"] .card .joke { border: 2px solid #111; border-left: 7px solid #FF4FA3; background: #FFF1C7; font-weight: 700; border-radius: 6px; }
+[data-theme="meme"] .card .tagrow span { border: 2px solid #111; font-weight: 800; font-family: var(--font-label); text-transform: uppercase; font-size: 10px; }
+[data-theme="meme"] .card .infobtn { background: #FFD23F; border: 2px solid #111; }
+
+/* Штампы: цветная плашка с обводкой, а не контур */
+[data-theme="meme"] .stamp { border: 3px solid #111; color: #111; box-shadow: 4px 4px 0 #111; border-radius: 8px; }
+[data-theme="meme"] .stamp.like { background: var(--like); }
+[data-theme="meme"] .stamp.nope { background: var(--nope); }
+[data-theme="meme"] .stamp.super { background: var(--super); }
+
+/* Кнопки действий: квадраты с тенью */
+[data-theme="meme"] .act { border-radius: 14px; background: #FFFFFF; border: 3px solid #111; }
+[data-theme="meme"] .act.like { background: #FF4FA3; border-color: #111; }
+[data-theme="meme"] .act.super { background: #FFD23F; border-color: #111; }
+[data-theme="meme"] .act.nope { color: #FF3B30; font-weight: 900; }
+
+/* Тест на юмор */
+[data-theme="meme"] .qcard .txt, [data-theme="meme"] .qcard .say { font-weight: 800; }
+[data-theme="meme"] .qcard .scene { filter: drop-shadow(4px 4px 0 rgba(17, 17, 17, 0.9)); }
+[data-theme="meme"] .qbtn.rzh { background: #FFD23F; border-color: #111; color: #111; }
+[data-theme="meme"] .likert button.on { background: #FF4FA3; color: #111; border-color: #111; }
+
+/* Поверхности с жёсткой тенью */
+[data-theme="meme"] .chip { font-weight: 800; }
+[data-theme="meme"] .chip.on { background: #FFD23F; border-color: #111; }
+[data-theme="meme"] .panel, [data-theme="meme"] .laugh, [data-theme="meme"] .capitem, [data-theme="meme"] .rank,
+[data-theme="meme"] .plan, [data-theme="meme"] .banner { box-shadow: 4px 4px 0 #111; }
+[data-theme="meme"] .progress { height: 12px; border: 2px solid #111; background: #FFFFFF; border-radius: 6px; }
+[data-theme="meme"] .progress > i { border-radius: 0; }
+[data-theme="meme"] .axisbar .bar { border: 2px solid #111; height: 12px; }
+[data-theme="meme"] .ava { border: 2px solid #111; }
+[data-theme="meme"] .ava.xl { border: 3px solid #111; }
+
+/* Таббар: плоская белая полоса, активная вкладка подчёркнута розовой плашкой */
+[data-theme="meme"] .tabbar { backdrop-filter: none; -webkit-backdrop-filter: none; }
+[data-theme="meme"] .tab { font-family: var(--font-label); text-transform: uppercase; font-size: 10px; font-weight: 800; }
+[data-theme="meme"] .tab .ico { filter: grayscale(1) contrast(1.1) opacity(0.75); }
+[data-theme="meme"] .tab.on .ico { filter: none; }
+[data-theme="meme"] .tab.on .ico { background: #FFD23F; border: 2px solid #111; border-radius: 8px; padding: 1px 12px; box-shadow: 2px 2px 0 #111; transform: none; }
+
+/* Мэтч: жёлтый фон в горошек, фото-наклейки наискось */
+[data-theme="meme"] .match { background: radial-gradient(rgba(17, 17, 17, 0.16) 1.4px, transparent 1.8px) 0 0 / 16px 16px, #FFD23F; }
+[data-theme="meme"] .match h1 { font-size: 42px; line-height: 0.95; }
+[data-theme="meme"] .match .qnum { background: #111; color: #FFD23F; padding: 5px 10px; border-radius: 6px; }
+[data-theme="meme"] .match .pair .ava { border: 3px solid #111; box-shadow: 5px 5px 0 #111; border-radius: 16px; }
+[data-theme="meme"] .match .pair .ava:first-child { transform: rotate(-6deg); }
+[data-theme="meme"] .match .pair .ava:last-child { transform: rotate(6deg); }
+[data-theme="meme"] .match .pair .heart { border: 3px solid #111; box-shadow: 4px 4px 0 #111; background: #FF4FA3; }
+[data-theme="meme"] .match p.muted { color: #111; font-weight: 700; }
+
+/* Чат */
+[data-theme="meme"] .bubble { border: 2px solid #111; box-shadow: 3px 3px 0 #111; background: #FFFFFF; }
+[data-theme="meme"] .bubble.me { background: #FF4FA3; }
+[data-theme="meme"] .bubble.date { background: #FFD23F; }
+[data-theme="meme"] .composer { border-top: 3px solid #111; background: #FFFFFF; }
+[data-theme="meme"] .composer .send { box-shadow: 3px 3px 0 #111; border-radius: 12px; }
+[data-theme="meme"] .composer .input { border-radius: 12px; }
+[data-theme="meme"] .sheet { border: 3px solid #111; border-bottom: 0; }

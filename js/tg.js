@@ -1,9 +1,11 @@
 // Мост Telegram Mini App с фолбэком на обычный браузер. Ждёт SDK (как _tg.html в Weekender), проверяет версии Bot API,
-// держит --app-h из viewportStableHeight, даёт хаптику и BackButton. Бренд тёмный всегда: themeParams не читаем.
+// держит --app-h из viewportStableHeight, даёт хаптику и BackButton. Цвет шапки берём из активной темы (js/theme.js), themeParams не читаем.
 (function () {
   'use strict';
   const H = (globalThis.Haha = globalThis.Haha || {});
-  const BRAND_BG = '#0B0B0F';
+  function themeBg() {
+    try { const t = H.theme && H.theme.byId[H.theme.current()]; return (t && t.bg) || '#09090C'; } catch (e) { return '#09090C'; }
+  }
   const T = {
     available: false, wa: null, platform: 'browser', version: '0', user: null, startParam: null, ready: false,
     onBack: null
@@ -29,8 +31,7 @@
     if (!T.available) { T.platform = 'browser'; finish(); return; }
     try { wa.ready(); } catch (e) { /* игнорируем */ }
     try { wa.expand(); } catch (e) { /* игнорируем */ }
-    if (has('6.9')) { try { wa.setHeaderColor(BRAND_BG); wa.setBackgroundColor(BRAND_BG); } catch (e) { /* старый клиент */ } }
-    if (has('7.10')) { try { wa.setBottomBarColor(BRAND_BG); } catch (e) { /* игнорируем */ } }
+    setColors(themeBg());
     if (has('7.7')) { try { wa.disableVerticalSwipes(); } catch (e) { /* игнорируем */ } }
     else document.documentElement.classList.add('no-vswipe');
     if (has('6.1')) {
@@ -62,6 +63,12 @@
     })();
   }
 
+  function setColors(bg) {
+    if (!T.available) return;
+    if (has('6.9')) { try { T.wa.setHeaderColor(bg); T.wa.setBackgroundColor(bg); } catch (e) { /* старый клиент */ } }
+    if (has('7.10')) { try { T.wa.setBottomBarColor(bg); } catch (e) { /* игнорируем */ } }
+  }
+
   function haptic(kind) {
     if (!T.available || !has('6.1')) return;
     try {
@@ -89,5 +96,5 @@
   }
 
   H.tg = T;
-  T.init = init; T.has = has; T.haptic = haptic; T.setBack = setBack; T.applyViewport = applyViewport; T.openLink = openLink; T.alert = alert;
+  T.init = init; T.has = has; T.haptic = haptic; T.setBack = setBack; T.applyViewport = applyViewport; T.openLink = openLink; T.setColors = setColors; T.alert = alert;
 })();
